@@ -1,16 +1,12 @@
 name: Xcode - Build and Analyze
 
 on:
-  pull_request:
+  pull_request_review:
+    types: [submitted]
     branches: [ "main" ]
-    # Only run when relevant files change (saves macOS minutes)
-    paths:
-      - '**/*.swift'
-      - '**/*.xcodeproj/**'
-      - '**/*.xcworkspace/**'
-      - '**/Package.swift'
-      - '**/Package.resolved'
-      - '.github/workflows/xcode.yml'
+
+# Only run when PR is approved (not just any review)
+# Path filters not supported with pull_request_review, check done in job
 
 # Cancel in-progress runs when a new commit is pushed (saves minutes)
 concurrency:
@@ -21,6 +17,8 @@ jobs:
   build:
     name: Build and analyse default scheme using xcodebuild command
     runs-on: macos-latest
+    # Only run when review is approved (not commented or changes_requested)
+    if: github.event.review.state == 'approved'
     # Timeout after 15 minutes to prevent runaway builds
     timeout-minutes: 15
 
