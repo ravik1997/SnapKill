@@ -3,11 +3,26 @@ name: Xcode - Build and Analyze
 on:
   pull_request:
     branches: [ "main" ]
+    # Only run when relevant files change (saves macOS minutes)
+    paths:
+      - '**/*.swift'
+      - '**/*.xcodeproj/**'
+      - '**/*.xcworkspace/**'
+      - '**/Package.swift'
+      - '**/Package.resolved'
+      - '.github/workflows/xcode.yml'
+
+# Cancel in-progress runs when a new commit is pushed (saves minutes)
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     name: Build and analyse default scheme using xcodebuild command
     runs-on: macos-latest
+    # Timeout after 15 minutes to prevent runaway builds
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -52,3 +67,4 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO | xcpretty && exit ${PIPESTATUS[0]}
+
