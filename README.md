@@ -14,10 +14,19 @@ SnapKill is a lightweight, blisteringly fast macOS Menu Bar utility for killing 
 
 ## Installation
 
+### Download from Releases
+1. Download `SnapKill.app.zip` from [Releases](https://github.com/ravik1997/SnapKill/releases)
+2. Unzip and move `SnapKill.app` to your Applications folder
+3. Remove quarantine attribute (required for unsigned apps):
+   ```bash
+   xattr -d com.apple.quarantine /Applications/SnapKill.app
+   ```
+4. Launch SnapKill!
+
 ### Build from Source
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/SnapKill.git
+   git clone https://github.com/ravik1997/SnapKill.git
    ```
 2. Open `SnapKill.xcodeproj` in Xcode.
 3. Build and Run (Cmd+R).
