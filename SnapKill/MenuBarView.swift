@@ -187,9 +187,12 @@ struct MenuBarView: View {
     private var dynamicHeight: CGFloat {
         if case .idle = processManager.state { return 0 }
         // Use measured content height, capped at max height.
-        // If contentHeight is 0 (first render), give it a reasonable minimum to prevent collapse.
-        let h = contentHeight > 0 ? contentHeight : 50
-        return min(h, Constants.UI.maxHeight)
+        // If contentHeight is 0 (first render), give it a reasonable minimum.
+        // Increased minimum to 100 to ensure at least one process row is visible.
+        let h = contentHeight > 0 ? contentHeight : 100
+        // Add buffer for footer (Kill All button area)
+        let withFooter = h + 50
+        return min(withFooter, Constants.UI.maxHeight)
     }
     
     private func performSearch() {
